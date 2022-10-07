@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+ 
+<style>
+    body {
+        width: fit-content;
+        margin: 20px auto;
+    }
+</style>
+ 
+<div>
+    <h3>Tarefas</h3>
+ 
+    <form method="POST" action="/" class="ui form">
+      <div class="ui field action input" style="width: 525px;">
+          {% csrf_token %} {{form.nome}}
+          <input type="submit" name="Create Task" class="ui primary button"/>
+      </div>
+  </form>
+
+ 
+ 
+    {% for tarefa in tarefas %}
+      <div class="ui segment" style="width: 600px;">
+          {% if tarefa.feita == True %}
+            <strike>{{ tarefa }}</strike>
+
+            <p>Criado em: {{ tarefa.data_criacao|date:'d/m/Y -H:i' }}</p>
+          {% else %}
+            <p>{{ tarefa }}</p>
+            <p>Criado em: {{ tarefa.data_criacao|date:'d/m/Y -H:i' }}</p>
+          {% endif %}
+          <div class="right-align">
+              <a href="{% url 'tarefa:update' tarefa.id %}" class="ui secondary basic button ">Atualizar</a>
+              <a href="{% url 'tarefa:delete' tarefa.id %}" class="ui negative basic button right hide-on-med-and-down">Excluir</a>
+          </div>
+      </div>
+    {% endfor %}
+</div>
+ 

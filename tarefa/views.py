@@ -1,45 +1,48 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from .forms import TarefaForm, TarefaNovaForm
+from .forms import TarefaForm
 from .models import Tarefa
 
 
 def index(request):
+    tarefas = Tarefa.objects.all()
+
+    form = TarefaForm()
+
     if request.method == "POST":
-        form = TarefaNovaForm(request.POST)
+        form = TarefaForm(request.POST)
 
         if form.is_valid():
             form.save()
-            return redirect('tarefa:index')
-        else:
-            tarefas = Tarefa.objects.filter(feita=False).order_by('-id')
-            return render(
-                request,
-                'tarefa/index.html',
-                {
-                    'form': form,
-                    'tarefas': tarefas,
-                }
-            )
+        return redirect('/')
     
-    tarefas = Tarefa.objects.all()
-    return render(request,'tarefa/index.html', {"tarefas": tarefas})
+    context = {'tarefas': tarefas, 'form': form}
 
-def editar(request, tarefa_id):
-    tarefa = Tarefa.objects.get(id=tarefa_id)
-    form = TarefaForm(request.POST, instance=tarefa)
+    return render(request, 'tarefa/list.html', context)
 
-    if form.is_valid():
-        form.save()
 
-    return redirect('tarefa:index')
+def updatingTask(request, pk):
+    tarefa = Tarefa.objects.get(id=pk)
+
+    form = TarefaForm(instance=tarefa)
+
+    if request.method == 'POST':
+        form = TarefaForm(request.POST, instance=tarefa)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
     
-    
+    context = {'form': form}
+
+    return render(request, 'tarefa/update.html', context)
 
 
-def apagar(request, tarefa_id):
+def deleteTask(request, pk):
+    item = Tarefa.objects.get(id=pk)
+
     if request.method == "POST":
-        Tarefa.objects.filter(id=tarefa_id).delete()
+        item.delete()
+        return redirect('/')
 
-    return redirect('tarefa:index')
+    context = {'item': item}
 
+    return render(request, 'tarefa/delete.html', context)
