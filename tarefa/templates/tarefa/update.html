@@ -1,24 +1,19 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
- 
-<style>
-    body {
-        width: fit-content;
-        margin: 20px auto;
-    }
- 
-    form {
-        margin: 0 10px;
-    }
-</style>
- 
-<h3>Atualizar Tarefa</h3>
- 
-<form method="POST" action="" class="ui form">
-    <div class="ui field action input">
-        {% csrf_token %}
-        {{ form.as_table }}
-        
-        <input type="submit" name="Update Task" class="ui primary basic button" />
+{% load static %}
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'tarefa/css/style.css' %}">
+
+
+<div class="center-column">
+    <div class="todo-list">
+        <div class="item-row">
+            <h3 class="text-center">Atualizar tarefa</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" name="Update Task">
+            </form>
+        </div>
     </div>
-    
-</form>
+</div>

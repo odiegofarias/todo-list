@@ -17,7 +17,7 @@ def index(request):
     
     context = {'tarefas': tarefas, 'form': form}
 
-    return render(request, 'tarefa/list.html', context)
+    return render(request, 'tarefa/index.html', context)
 
 
 def updatingTask(request, pk):

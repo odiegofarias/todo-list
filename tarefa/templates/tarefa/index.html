@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-Br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'tarefa/css/style.css' %}">
+</head>
+
+<body>
+  <div class="center-column">
+    <form method="POST" action="/">
+      {% csrf_token %}
+      {{ form.nome }}
+      <input type="submit" class="btn btn-info" name="Create Task" value="Adicionar tarefa">
+    </form>
+    <div class="todo-list">
+      {% for tarefa in tarefas %}
+        <div class="item-row">
+          <a href="{% url 'tarefa:update' tarefa.id %}" class="btn btn-sm btn-info">Atualizar</a>
+          <a href="{% url 'tarefa:delete' tarefa.id %}" class="btn btn-sm btn-danger">Apagar</a>
+          {% if tarefa.feita == True %}
+            <s>{{ tarefa.nome }}</s>
+          {% else %}
+            <span>{{ tarefa.nome }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</body>
+</html>
